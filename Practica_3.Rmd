@@ -94,8 +94,8 @@ epa_http_one_hot$Timestamp <- NULL
 epa_http_one_hot$Longitud_Url <- nchar(epa_http_one_hot$Recurso)
 epa_http_one_hot$Recurso <- NULL
 epa_http_one_hot <- mutate_at(epa_http_one_hot, c("Tamaño"), ~replace(., is.na(.), 0))
-clust1 <- kmeans(epa_http_one_hot , centers = 4)
-clust2 <- kmeans(epa_http_one_hot , centers = 3)
+clust1 <- kmeans(epa_http_one_hot , centers = 2)
+clust2 <- kmeans(epa_http_one_hot , centers = 4)
 clust1
 clust2
 
@@ -105,7 +105,13 @@ clust2
 Representad visualmente en gráficos de tipo scatter plot el resultado de
 vuestros clústering.
 ```{r P1-6}
+color_1 <- rainbow(n = length(unique(clust1$cluster)))
+grap_1 <- plot(x = epa_http_one_hot$Tamaño, y = epa_http_one_hot$Longitud_Url, col = color_1 [clust1$cluster], main = " Grafico agrupamiento de 2")
+legend("bottomright", legend = levels(factor(clust1$cluster)), col = color_1, pch = 16)
 
+color_2 <- rainbow(n = length(unique(clust2$cluster)))
+grap_2 <- plot(x = epa_http_one_hot$Tamaño, y = epa_http_one_hot$Longitud_Url, col = color_2[ clust2$cluster], main = " Grafico agrupamiento de 4")
+legend("bottomright", legend = levels(factor(clust2$cluster)), col = color_2, pch = 16)
 ```
 ## R Markdown
 
