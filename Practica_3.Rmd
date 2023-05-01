@@ -39,6 +39,7 @@ epa_http$Protocolo <- NULL
 epa_http$Tamaño  <- ifelse(is.na(epa_http$Tamaño), 0 , epa_http$Tamaño)
 View(epa_http)
 ```
+
 ### PREGUNTA 1  Apartado 2
 Identificar el número único de usuarios que han interactuado directamente con
 el servidor de forma segregada según si los usuarios han tenido algún tipo de
@@ -52,9 +53,22 @@ data_address <- filter(concurrences, Frecuencia > 0) %>% arrange(Cod_retorno)
 View(data_address)
 unique_code  <- unique(data_address$Cod_retorno)
 print(unique_code)
+```
 
-
-
+### PREGUNTA 1  Apartado 3
+Analizar los distintos tipos de peticiones HTTP (GET, POST, PUT, DELETE)
+gestionadas por el servidor, identificando la frecuencia de cada una de estas.
+Repetir el análisis, esta vez filtrando previamente aquellas peticiones
+correspondientes a recursos ofrecidos de tipo imagen.
+```{r P1-3}
+frecuencia_http  <- table(epa_http$Metodo_limpio)
+method_df <-  data.frame (http = names(frecuencia_http), frecuencia_http  = as.vector(frecuencia_http))
+View(method_df)
+images_data <- epa_http %>% filter(!grepl(pattern = ".*[png|jpg|gif|ico]$", x = Recurso))
+View(images_data)
+frecuencia_http_2  <- table(images_data$Metodo_limpio)
+method_df_2 <- data.frame (http = names(frecuencia_http_2), frecuencia_http_2 = as.vector( frecuencia_http_2))
+knitr::kable(method_df,format = "html")
 ```
 
 ### PREGUNTA 1  Apartado 5
