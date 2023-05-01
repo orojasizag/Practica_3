@@ -37,7 +37,7 @@ epa_http$Protocolo_limpio <- str_sub(epa_http$Protocolo,1,8)
 epa_http$Protocolo_limpio <- as.factor(epa_http$Protocolo_limpio)
 epa_http$Protocolo <- NULL
 epa_http$Tamaño  <- ifelse(is.na(epa_http$Tamaño), 0 , epa_http$Tamaño)
-View(epa_http)
+summary(epa_http)
 ```
 
 ### PREGUNTA 1  Apartado 2
@@ -48,9 +48,7 @@ error en las distintas peticiones ofrecidas por el servidor.
 address_table <- data.frame (IP = epa_http$IP , Cod_retorno = epa_http$Cod_retorno)
 concurrences <- as.data.frame(table(address_table))
 colnames(concurrences) <- c("IP","Cod_retorno","Frecuencia")
-View(concurrences)
 data_address <- filter(concurrences, Frecuencia > 0) %>% arrange(Cod_retorno)
-View(data_address)
 unique_code  <- unique(data_address$Cod_retorno)
 print(unique_code)
 ```
@@ -63,12 +61,28 @@ correspondientes a recursos ofrecidos de tipo imagen.
 ```{r P1-3}
 frecuencia_http  <- table(epa_http$Metodo_limpio)
 method_df <-  data.frame (http = names(frecuencia_http), frecuencia_http  = as.vector(frecuencia_http))
-View(method_df)
 images_data <- epa_http %>% filter(!grepl(pattern = ".*[png|jpg|gif|ico]$", x = Recurso))
-View(images_data)
 frecuencia_http_2  <- table(images_data$Metodo_limpio)
 method_df_2 <- data.frame (http = names(frecuencia_http_2), frecuencia_http_2 = as.vector( frecuencia_http_2))
 knitr::kable(method_df,format = "html")
+```
+
+### PREGUNTA 1  Apartado 4
+Generar un gráfico que permita visualizar las respuestas del servidor, es decir,
+la distribución de peticiones según el código de respuesta de esta. Probad
+distintos tipos de gráficos (por lo menos 2 distintos e incluid estos en el
+documento RMarkdown).
+```{r P1-4}
+frecuency_table <- table(epa_http$Cod_retorno)
+Cod_retorno_df <- data.frame(Cod_retorno = names(frecuency_table), Freq  = as.vector(frecuency_table))
+
+histograma <- ggplot(Cod_retorno_df, mapping = (aes(x  =  Cod_retorno , y  =  Freq))) + geom_bar(stat  =  "identity") + labs(title  =  "Histograma Respuesta de Código", x  =  "Código de respuesta", y  =  "Frecuencia")
+ggplot2:::print.ggplot(histograma)
+
+grafico <- ggplot(Cod_retorno_df, mapping = aes(x  =  " " , y  =  Freq , fill  =  Cod_retorno)) + geom_bar(stat  =  "identity") + coord_polar( "y" , start = 0 ) + labs(title  =  "Código de retorno") + theme_light()
+ggplot2:::print.ggplot(grafico)
+
+
 ```
 
 ### PREGUNTA 1  Apartado 5
