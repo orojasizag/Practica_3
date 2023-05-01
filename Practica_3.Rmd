@@ -82,7 +82,6 @@ ggplot2:::print.ggplot(histograma)
 grafico <- ggplot(Cod_retorno_df, mapping = aes(x  =  " " , y  =  Freq , fill  =  Cod_retorno)) + geom_bar(stat  =  "identity") + coord_polar( "y" , start = 0 ) + labs(title  =  "Código de retorno") + theme_light()
 ggplot2:::print.ggplot(grafico)
 
-
 ```
 
 ### PREGUNTA 1  Apartado 5
@@ -94,9 +93,20 @@ epa_http_one_hot$IP <- NULL
 epa_http_one_hot$Timestamp <- NULL
 epa_http_one_hot$Longitud_Url <- nchar(epa_http_one_hot$Recurso)
 epa_http_one_hot$Recurso <- NULL
+epa_http_one_hot <- mutate_at(epa_http_one_hot, c("Tamaño"), ~replace(., is.na(.), 0))
+clust1 <- kmeans(epa_http_one_hot , centers = 4)
+clust2 <- kmeans(epa_http_one_hot , centers = 3)
+clust1
+clust2
+
 ```
 
+### PREGUNTA 1  Apartado 6
+Representad visualmente en gráficos de tipo scatter plot el resultado de
+vuestros clústering.
+```{r P1-6}
 
+```
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
