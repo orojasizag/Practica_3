@@ -2,12 +2,72 @@
 title: "Practica_3"
 author: "Omar Rojas/Edwin Rivera"
 date: "2023-04-24"
-output: html_document
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
+
+```{r Libreria, include=FALSE}
+library(readr)
+library(stringr)
+library(mltools)
+library(data.table)
+library(ggplot2)
+library(dplyr)
+```
+
+### PREGUNTA 1 - Apartado 1
+Descomprimir el fichero comprimido que contiene los registros del servidor, y
+a partir de los datos extraídos, cargar en data frame los registros con las
+peticiones servidas.
+```{r P1-1, echo=FALSE, message=FALSE, warning=FALSE}
+epa_http <- read_table("C:/Users/OMAR/Desktop/Data Science aplicada a la Ciberseguridad/Repositories/data_science/Practica_3/Practica_3/epa-http.csv", col_names = FALSE)
+names(epa_http) <- c("IP","Timestamp","Metodo","Recurso","Protocolo","Cod_retorno","Tamaño")
+epa_http$Tamaño <- as.numeric(epa_http$Tamaño)
+epa_http$Metodo_limpio <- str_sub(epa_http$Metodo,2)
+epa_http$Metodo_limpio <- as.factor(epa_http$Metodo_limpio)
+epa_http$Metodo <- NULL
+epa_http$Protocolo_limpio <- str_sub(epa_http$Protocolo,1,8)
+epa_http$Protocolo_limpio <- as.factor(epa_http$Protocolo_limpio)
+epa_http$Protocolo <- NULL
+epa_http$Tamaño  <- ifelse(is.na(epa_http$Tamaño), 0 , epa_http$Tamaño)
+View(epa_http)
+```
+### PREGUNTA 1  Apartado 2
+Identificar el número único de usuarios que han interactuado directamente con
+el servidor de forma segregada según si los usuarios han tenido algún tipo de
+error en las distintas peticiones ofrecidas por el servidor.
+```{r P1-2}
+address_table <- data.frame (IP = epa_http$IP , Cod_retorno = epa_http$Cod_retorno)
+concurrences <- as.data.frame(table(address_table))
+colnames(concurrences) <- c("IP","Cod_retorno","Frecuencia")
+View(concurrences)
+data_address <- filter(concurrences, Frecuencia > 0) %>% arrange(Cod_retorno)
+View(data_address)
+unique_code  <- unique(data_address$Cod_retorno)
+print(unique_code)
+
+
+
+```
+
+### PREGUNTA 1  Apartado 5
+Utilizando un algoritmo de aprendizaje no supervisado, realizad un análisis de
+clústering con k-means para los datos del servidor.
+```{r P1-5}
+epa_http_one_hot <- one_hot(as.data.table(epa_http), sparsifyNAs = TRUE)
+epa_http_one_hot$IP <- NULL
+epa_http_one_hot$Timestamp <- NULL
+epa_http_one_hot$Longitud_Url <- nchar(epa_http_one_hot$Recurso)
+epa_http_one_hot$Recurso <- NULL
+```
+
 
 ## R Markdown
 
