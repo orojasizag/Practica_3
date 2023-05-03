@@ -51,6 +51,27 @@ colnames(concurrences) <- c("IP","Cod_retorno","Frecuencia")
 data_address <- filter(concurrences, Frecuencia > 0) %>% arrange(Cod_retorno)
 unique_code  <- unique(data_address$Cod_retorno)
 print(unique_code)
+for (code in unique_code) {
+filter_table <- filter(data_address, Cod_retorno == code)
+assign(paste0("Cod_Table", code), filter_table)
+}
+Cod200_users <- nrow(Cod_Table200)
+Cod200_users
+Cod302_users <- nrow(Cod_Table302)
+Cod302_users
+Cod304_users <- nrow(Cod_Table304)
+Cod304_users
+Cod400_users <- nrow(Cod_Table400)
+Cod400_users
+Cod403_users <- nrow(Cod_Table403)
+Cod403_users
+Cod404_users <- nrow(Cod_Table404)
+Cod404_users
+Cod500_users <- nrow(Cod_Table500)
+Cod500_users
+Cod501_users <- nrow(Cod_Table501)
+Cod501_users
+
 ```
 
 ### PREGUNTA 1  Apartado 3
@@ -76,10 +97,10 @@ documento RMarkdown).
 frecuency_table <- table(epa_http$Cod_retorno)
 Cod_retorno_df <- data.frame(Cod_retorno = names(frecuency_table), Freq  = as.vector(frecuency_table))
 
-histograma <- ggplot(Cod_retorno_df, mapping = (aes(x  =  Cod_retorno , y  =  Freq))) + geom_bar(stat  =  "identity") + labs(title  =  "Histograma Respuesta de Código", x  =  "Código de respuesta", y  =  "Frecuencia")
+histograma <- ggplot(Cod_retorno_df, mapping = (aes(x = Cod_retorno , y  =  Freq))) + geom_bar(stat = "identity") + labs(title ="Histograma Respuesta de Código", x  = "Código de respuesta", y = "Frecuencia") + theme_light()
 ggplot2:::print.ggplot(histograma)
 
-grafico <- ggplot(Cod_retorno_df, mapping = aes(x  =  " " , y  =  Freq , fill  =  Cod_retorno)) + geom_bar(stat  =  "identity") + coord_polar( "y" , start = 0 ) + labs(title  =  "Código de retorno") + theme_light()
+grafico <- ggplot(Cod_retorno_df, mapping = aes(x = " " , y = Freq , fill  =  Cod_retorno)) + geom_bar(stat = "identity", color = "red") + coord_polar( "y" , start = 0 ) + labs(title = "Código de retorno") + theme_light()
 ggplot2:::print.ggplot(grafico)
 
 ```
@@ -98,15 +119,15 @@ clust1 <- kmeans(epa_http_one_hot , centers = 2)
 clust2 <- kmeans(epa_http_one_hot , centers = 4)
 clust1
 clust2
-
 ```
 
 ### PREGUNTA 1  Apartado 6
 Representad visualmente en gráficos de tipo scatter plot el resultado de
 vuestros clústering.
 ```{r P1-6}
+
 color_1 <- rainbow(n = length(unique(clust1$cluster)))
-grap_1 <- plot(x = epa_http_one_hot$Tamaño, y = epa_http_one_hot$Longitud_Url, col = color_1 [clust1$cluster], main = " Grafico agrupamiento de 2")
+grap_1 <- plot(x = epa_http_one_hot$Tamaño, y = epa_http_one_hot$Longitud_Url, col = color_1[ clust1$cluster], main = " Grafico agrupamiento de 2")
 legend("bottomright", legend = levels(factor(clust1$cluster)), col = color_1, pch = 16)
 
 color_2 <- rainbow(n = length(unique(clust2$cluster)))
