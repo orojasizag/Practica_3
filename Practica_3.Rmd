@@ -1,6 +1,6 @@
 ---
 title: "Practica_3"
-author: "Omar Rojas / Edwin Rivera"
+author: "Omar Rojas / Edwin Rivera P"
 date: "2023-04-24"
 output:
   pdf_document:
