@@ -3,10 +3,10 @@ title: "Practica_3"
 author: "Omar Rojas/Edwin Rivera"
 date: "2023-04-24"
 output:
-  pdf_document:
-    latex_engine: xelatex
   html_document:
     df_print: paged
+  pdf_document:
+    latex_engine: xelatex
 ---
 
 ```{r setup, include=FALSE}
