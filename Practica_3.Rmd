@@ -27,7 +27,7 @@ Descomprimir el fichero comprimido que contiene los registros del servidor, y
 a partir de los datos extraídos, cargar en data frame los registros con las
 peticiones servidas.
 ```{r P1-1, echo=FALSE, message=FALSE, warning=FALSE}
-epa_http <- read_table("C:/Users/OMAR/Desktop/Data Science aplicada a la Ciberseguridad/Repositories/data_science/Practica_3/Practica_3/epa-http.csv", col_names = FALSE)
+epa_http <- read_table("C:\DATASCIENCE\Final\Practica_3/epa-http.csv", col_names = FALSE)
 names(epa_http) <- c("IP","Timestamp","Metodo","Recurso","Protocolo","Cod_retorno","Tamaño")
 epa_http$Tamaño <- as.numeric(epa_http$Tamaño)
 epa_http$Metodo_limpio <- str_sub(epa_http$Metodo,2)
